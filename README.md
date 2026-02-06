@@ -14,7 +14,9 @@
   <img src="https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white" alt="Python"/>
   <img src="https://img.shields.io/badge/Dash-2.x-00BC8C?logo=plotly&logoColor=white" alt="Dash"/>
   <img src="https://img.shields.io/badge/Plotly-5.x-3F4F75?logo=plotly&logoColor=white" alt="Plotly"/>
-  <img src="https://img.shields.io/badge/Tableau-2024-E97627?logo=tableau&logoColor=white" alt="Tableau"/>
+  <img src="https://img.shields.io/badge/Streamlit-1.x-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit"/>
+  <img src="https://img.shields.io/badge/Altair-5.x-4C78A8" alt="Altair"/>
+  <img src="https://img.shields.io/badge/Matplotlib-3.x-11557C" alt="Matplotlib"/>
   <img src="https://img.shields.io/badge/VAST_Challenge-2022-FF6B6B" alt="VAST Challenge 2022"/>
 </p>
 
@@ -27,11 +29,11 @@
 
 The system addresses three core analytical questions:
 
-| Module                        | Question                                                     | Tech          |
-| ----------------------------- | ------------------------------------------------------------ | ------------- |
-| **Business Turnover**         | How are employers faring? What are the layoff patterns?      | Tableau       |
-| **Resident Financial Health** | How do residents' incomes compare to expenses across demographics? | Dash + Plotly |
-| **Business Revenue**          | How does foot traffic correlate with pub/restaurant revenue? | Tableau       |
+| Module                        | Question                                                     | Tech                            |
+| ----------------------------- | ------------------------------------------------------------ | ------------------------------- |
+| **Business Turnover**         | How are employers faring? What are the layoff patterns?      | Dash + Plotly                   |
+| **Resident Financial Health** | How do residents' incomes compare to expenses across demographics? | Streamlit + Altair + Matplotlib |
+| **Business Revenue**          | How does foot traffic correlate with pub/restaurant revenue? | Plotly                          |
 
 > **My primary contribution**: Resident Financial Health module (Dash/Plotly interactive dashboard), data preprocessing pipeline, and system integration.
 
@@ -77,7 +79,7 @@ Pubs experienced the **sharpest decline** in both foot traffic and revenue, with
 |             ![](images/fig1-monthly-workers.png)             |               ![](images/fig2-layoff-map.png)                |                 ![](images/fig3-treemap.png)                 |
 | Line chart with trend projection and significant change markers | Spatial map with color-intensity encoding for layoff concentration | Treemap categorized by company size (Small / Medium / Large) |
 
-### Resident Financial Health Module *(Interactive — Dash/Plotly)*
+### Resident Financial Health Module *(Interactive — Streamlit + Altair + Matplotlib)*
 
 |                    Group Comparison View                     |                    Detailed Monthly View                     |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
@@ -115,13 +117,13 @@ Pubs experienced the **sharpest decline** in both foot traffic and revenue, with
 └─────────┼────────────────┼────────────────┼─────────────┘
           ▼                ▼                ▼
 ┌──────────────┐ ┌──────────────────┐ ┌──────────────────┐
-│  Tableau     │ │  Dash + Plotly   │ │  Tableau         │
-│  Workbook    │ │  Web App         │ │  Workbook        │
-│              │ │                  │ │                  │
-│ • Line chart │ │ • Trend lines    │ │ • Animated       │
-│ • Map view   │ │ • Box plots      │ │   scatter plot   │
+│  Dash +      │ │  Streamlit +     │ │  Plotly          │
+│  Plotly      │ │  Altair +        │ │  Interactive     │
+│              │ │  Matplotlib      │ │  HTML            │
+│ • Timeline   │ │ • Stacked bar    │ │ • Animated       │
+│ • Map view   │ │   drilldown      │ │   scatter plot   │
 │ • Treemap    │ │ • Scatter plot   │ │ • Dual-axis      │
-│              │ │ • Stacked bars   │ │   line chart     │
+│              │ │                  │ │   line chart     │
 └──────────────┘ └──────────────────┘ └──────────────────┘
    Module 1           Module 2             Module 3
 ```
@@ -146,12 +148,18 @@ financialview-vast-2022/
 │
 ├── modules/
 │   ├── business-turnover/
-│   │   └── README.md                      # Tableau visualizations & design notes
+│   │   ├── README.md                      # Module documentation
+│   │   ├── app.py                         # Dash dashboard (map + treemap + stats)
+│   │   ├── layoff_timeline.py             # Working population timeline (Plotly)
+│   │   ├── layoff_map.py                  # Geographical layoff map (Plotly)
+│   │   └── layoff_treemap.py              # Layoffs by employer size (Plotly)
 │   ├── resident-financial-health/
-│   │   ├── README.md                      # Dash module documentation
-│   │   └── app.py                         # Interactive Dash application
+│   │   ├── README.md                      # Module documentation
+│   │   ├── app.py                         # Streamlit dashboard (stacked bar drilldown)
+│   │   └── scatter_income_vs_expense.py   # Income vs. expense scatter (Matplotlib)
 │   └── business-revenue/
-│       └── README.md                      # Tableau visualizations & design notes
+│       ├── README.md                      # Module documentation
+│       └── revenue_visualizations.py      # Animated scatter + trend chart (Plotly)
 │
 ├── analysis/
 │   ├── requirements-analysis.md           # VAST challenge question → design mapping
@@ -161,40 +169,39 @@ financialview-vast-2022/
 │   └── MSBD5005_Final_Report.pdf
 │
 └── images/                                # Figures from the report
-    ├── fig1-monthly-workers.png
-    ├── fig2-layoff-map.png
-    ├── fig3-treemap.png
-    ├── fig4-group-comparison.png
-    ├── fig5-detailed-monthly.png
-    ├── fig6-scatter-revenue.png
-    └── fig7-weekly-trends.png
 ```
 
 ---
 
 ## Quick Start
 
-### Resident Financial Health Module (Dash App)
+### Resident Financial Health Module (Streamlit App)
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/financialview-vast-2022.git
+git clone https://github.com/kozykong/vast2022_hkust-data-VIZ-.git
 cd financialview-vast-2022
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the dashboard
-python modules/resident-financial-health/app.py
+# Run the interactive dashboard
+cd modules/resident-financial-health
+streamlit run app.py
 ```
 
-The dashboard will be available at `http://127.0.0.1:8050`.
+### Business Turnover Dashboard (Dash App)
+
+```bash
+cd modules/business-turnover
+python app.py
+# Open http://127.0.0.1:8050
+```
 
 ### Prerequisites
 
 - Python 3.9+
-- Preprocessed CSV files (generated from the VAST Challenge 2022 dataset)
-- Tableau Desktop (for Business Turnover and Revenue modules)
+- Preprocessed CSV files (generated from the VAST Challenge 2022 dataset via `data-processing/scripts/`)
 
 ---
 
@@ -231,13 +238,13 @@ Key design principles:
 
 ## Tech Stack
 
-| Component                           | Technology             |
-| ----------------------------------- | ---------------------- |
-| Data Preprocessing                  | Python (Pandas, NumPy) |
-| Resident Financial Health Dashboard | Dash, Plotly Express   |
-| Business Turnover Visualizations    | Tableau                |
-| Business Revenue Visualizations     | Tableau                |
-| Report                              | LaTeX                  |
+| Component                              | Technology             |
+| -------------------------------------- | ---------------------- |
+| Data Preprocessing                     | Python (Pandas, NumPy) |
+| Business Turnover Dashboard            | Dash, Plotly, Shapely  |
+| Resident Financial Health Dashboard    | Streamlit, Altair      |
+| Resident Financial Health Scatter Plot | Matplotlib             |
+| Business Revenue Visualizations        | Plotly Express         |
 
 ---
 
