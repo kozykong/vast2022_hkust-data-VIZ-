@@ -35,7 +35,6 @@ The system addresses three core analytical questions:
 | **Resident Financial Health** | How do residents' incomes compare to expenses across demographics? | Streamlit + Altair + Matplotlib |
 | **Business Revenue**          | How does foot traffic correlate with pub/restaurant revenue? | Plotly                          |
 
-> **My primary contribution**: Resident Financial Health module (Dash/Plotly interactive dashboard), data preprocessing pipeline, and system integration.
 
 ---
 
